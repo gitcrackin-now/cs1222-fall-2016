@@ -1,3 +1,12 @@
+# 3. List the artistid, artistname and entrydate of all artists whose entrydate is earlier than anyone who has a 'directmail' leadsource.
+SELECT ArtistId, ArtistName, EntryDate
+FROM Artists
+WHERE EntryDate < ANY(
+  SELECT EntryDate
+  FROM Artists
+  WHERE LeadSource = 'directmail'
+);
+
 # 6. List all genres from the Genre table that are not represented in the Titles table.
 SELECT *
 FROM Genre
