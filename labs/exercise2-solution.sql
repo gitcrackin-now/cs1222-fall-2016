@@ -34,3 +34,10 @@ WHERE Birthday = (
     FROM Members
   )
 );
+
+# JOINS
+
+# 2. List each title from the Title table along with the name of the studio where it was recorded
+SELECT Title, StudioName
+FROM Titles
+  INNER JOIN Studios ON Titles.StudioID = Studios.StudioID;
