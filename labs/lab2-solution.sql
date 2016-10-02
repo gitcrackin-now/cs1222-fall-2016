@@ -1,3 +1,5 @@
+# Afternoon section
+
 # 1. List the name of the artist who recorded the track title 'Front Door'
 SELECT ArtistName, t.Title, tr.TrackTitle
 FROM Artists a
@@ -79,3 +81,93 @@ SELECT g.Genre, IFNULL(Title, 'No Titles')
 FROM Genre g
 LEFT JOIN Titles t
 ON g.Genre = t.Genre;
+
+# Evening section
+
+# 1. Report the names of all artists that came from e-mail that have not recorded a title. Use JOIN to answer this question.
+SELECT a.ArtistID, ArtistName, a.LeadSource, t.ArtistID
+FROM Artists a
+LEFT JOIN Titles t
+ON a.ArtistID = t.ArtistID
+WHERE a.LeadSource = 'email' AND
+t.Title IS NULL;
+
+# 2. Each member is given his or her salesperson as a primary contact name and also the name of that salespersons supervisor as a secondary contact name. Produce a list of member names and the primary and secondary contacts for each.
+SELECT m.FirstName, m.LastName,
+p.FirstName, p.LastName,
+s.FirstName, s.LastName
+FROM Members m
+INNER JOIN SalesPeople p
+USING (SalesID)
+INNER JOIN SalesPeople s
+ON p.Supervisor = s.SalesID;
+
+# 3. List the names of members in the 'Highlander'.
+SELECT FirstName, LastName
+FROM Members m
+INNER JOIN XRefArtistsMembers x
+USING (MemberID)
+INNER JOIN Artists a
+USING (ArtistID)
+WHERE ArtistName = 'Highlander';
+
+# 4. List each title from the Title table along with the name of the studio where it was recorded, the name of the artist, and the number of tracks on the title.
+SELECT Title, StudioName, ArtistName, COUNT(*)
+FROM Titles
+INNER JOIN Studios
+USING (StudioID)
+INNER JOIN Artists
+USING (ArtistID)
+INNER JOIN Tracks
+USING (TitleID)
+GROUP BY Title, StudioName, ArtistName;
+
+# 5. List all genres from the Genre table that are not represented in the Titles table
+SELECT g.Genre
+FROM Genre g
+LEFT JOIN Titles t
+USING (Genre)
+WHERE t.Genre IS NULL;
+
+# 6. List every genre from the Genre table and the names of any titles in that genre if any. For any genres without titles, display 'No Titles' in  the Title column.
+SELECT g.Genre, IFNULL(Title, 'No Titles')
+FROM Genre g
+LEFT JOIN Titles t
+ON g.Genre = t.Genre;
+
+# 7. Report the studio name and the last name of each studio contact. Hint: the last name is the part that follows the space.
+SELECT StudioName, Contact, TRIM(SUBSTRING(Contact, LOCATE(' ', Contact)))
+FROM Studios;
+
+# 8. Report the longest track title.
+SELECT TrackTitle
+FROM Tracks
+WHERE LENGTH(TrackTitle) = (
+  SELECT MAX(LENGTH(TrackTitle))
+  FROM Tracks
+);
+
+# 9. Redo Q6 using CASE.
+SELECT g.Genre, CASE Title
+WHEN 0 THEN Title
+ELSE 'No Title'
+END AS 'Title'
+FROM Genre g
+LEFT JOIN Titles t
+ON g.Genre = t.Genre;
+
+SELECT g.Genre, CASE IFNULL(Title)
+WHEN 0 THEN Title
+ELSE 'No Title'
+END AS 'Title'
+FROM Genre g
+LEFT JOIN Titles t
+ON g.Genre = t.Genre;
+
+# 10. Report the artist name and the age in years of the responsible member for each artist at the time of that artists entry date.
+SELECT ArtistName, m.FirstName, m.LastName, (TO_DAYS(a.EntryDate) - TO_DAYS(m.Birthday)) / 365 AS 'Age'
+FROM Artists a
+INNER JOIN XRefArtistsMembers x
+USING (ArtistID)
+INNER JOIN Members m
+USING (MemberID);
