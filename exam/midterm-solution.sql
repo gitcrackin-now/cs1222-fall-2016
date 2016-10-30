@@ -3,7 +3,7 @@ use lyric;
 # 1. List the TitleID, Track Title of all tracks whose Track Number is 3 and are at least 250 seconds long.
 SELECT TitleID, TrackTitle
 FROM Tracks
-WHERE TrackNum > 3 AND LengthSeconds > 250;
+WHERE TrackNum = 3 AND LengthSeconds > 250;
 
 # 2. List the Title and Genre and UPC of all Titles whose second leftmost digit of UPC is '2'.
 SELECT Title, Genre, UPC
@@ -25,8 +25,7 @@ HAVING COUNT(*) > 1;
 
 # 5. List the following information of all members: the first name, the position of the first occurrence of 'e' within the first name, the last name, the position of the first occurrence of 'ar' within the last name. Use proper column names.
 SELECT FirstName, 
-    LOCATE('e', FirstName) AS 'Occurence of e in FirstName', 
-    LOCATE('e', LastName) AS 'Occurence of e in LastName',
+    LOCATE('e', FirstName) AS 'Occurence of e in FirstName',
     LOCATE('ar', LastName) AS 'Occurence of ar in LastName'
 FROM Members;
 
@@ -124,6 +123,7 @@ SELECT DISTINCT CONCAT(UPPER(LEFT(type, 1)), LOWER(SUBSTRING(type, 2)))
 FROM Titles;
 
 # 19. Report the publisher name and the last word of each publisher name. Hint: the last word is the part that follows the space.
+# only display the last word not the last two words
 SELECT pub_name, TRIM(SUBSTRING(pub_name, LOCATE(' ', pub_name)))
 FROM Publishers;
 
