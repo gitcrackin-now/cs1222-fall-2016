@@ -5,7 +5,7 @@
 | Course name | Schedule |
 | :-- | :-- |
 | CS 1222 Section 7 & 8 | 12:00pm to 2:30pm |
-| CS 1222 Section 9 & 10 | 2:30pm to 5:00pm |
+| CS 1222 Section 9 & 10 | 5:00pm to 7:30pm |
 
 ## Description
 
